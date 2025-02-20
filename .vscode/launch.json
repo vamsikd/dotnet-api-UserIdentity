@@ -1,0 +1,35 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": ".NET Api (Dev)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "dotnet: build",
+            "program": "${workspaceFolder}/User-Identity.Api/bin/Debug/net8.0/User-Identity.Api.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/User-Identity.Api",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS": "http://localhost:5259/"
+            }
+        },
+        {
+            "name": "Launch Chrome: Swagger",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:5259/swagger/index.html",
+            "webRoot": "${workspaceFolder}/User-Identity.Api"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Debug API with Swagger",
+            "configurations": [
+                ".NET Api (Dev)",
+                "Launch Chrome: Swagger"
+            ]
+        }
+    ]
+}
