@@ -11,13 +11,13 @@ namespace User_Identity.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ApplicationUsersController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IValidator<ApplicationUserCreate> _validator;
         
-        public ApplicationUsersController(UserManager<ApplicationUser> userManager, 
+        public UsersController(UserManager<ApplicationUser> userManager, 
                                SignInManager<ApplicationUser> signInManager,
                                IValidator<ApplicationUserCreate> validator)
         {
