@@ -5,8 +5,20 @@ using User_Identity.Api.Entities;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using FluentValidation;
+using User_Identity.Api.Filters;
+using User_Identity.Api.Middleware;
+using Serilog;
 
+// Create builder first
 var builder = WebApplication.CreateBuilder(args);
+
+// Now initialize Serilog using builder.Configuration
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 // Retrieve connection string from appSettings (key "IdentiryConnection")
 var connectionString = builder.Configuration.GetConnectionString("IdentityConnection");
@@ -31,6 +43,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+// register custum filters
+builder.Services.AddScoped(typeof(ValidationFilter<>));
 
 // Add services to the container.
 builder.Services.AddControllers()
@@ -44,6 +58,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+// Register the logging middleware
+app.UseMiddleware<RequestLoggingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
