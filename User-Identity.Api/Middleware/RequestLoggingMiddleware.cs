@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace User_Identity.Api.Middleware
@@ -20,7 +21,9 @@ namespace User_Identity.Api.Middleware
         {
             using (_logger.BeginScope(new Dictionary<string, object>
             {
-                ["CorrelationId"] = httpContext.TraceIdentifier
+                ["RequestId"] = httpContext.TraceIdentifier,
+                ["TraceId"] = Activity.Current?.Id ?? "NA",
+
             }))
             {
                 
